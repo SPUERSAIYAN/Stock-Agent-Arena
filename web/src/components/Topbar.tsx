@@ -9,7 +9,7 @@ export function Topbar() {
         <div className="brand-mark">M</div>
         <div>
           <div className="eyebrow">Multi-Agent Investment</div>
-          <h1>股票决策工作台</h1>
+          <h1>AI Stock Analyzer</h1>
         </div>
       </div>
       <nav className="topnav" aria-label="工作台导航">

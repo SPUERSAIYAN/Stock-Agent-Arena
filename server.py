@@ -10,7 +10,7 @@ from typing import Any, Literal
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from fastapi.responses import Response, StreamingResponse
+from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -149,6 +149,11 @@ def health() -> dict[str, Any]:
 
 @app.get("/favicon.ico", include_in_schema=False)
 def favicon() -> Response:
+    favicon_path = WEB_DIST_DIR / "favicon.svg"
+    if not favicon_path.exists():
+        favicon_path = WEB_DIR / "public" / "favicon.svg"
+    if favicon_path.exists():
+        return FileResponse(favicon_path, media_type="image/svg+xml")
     return Response(status_code=204)
 
 
