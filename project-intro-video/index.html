@@ -6,9 +6,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       * {
+        box-sizing: border-box;
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
       }
 
       html,
@@ -16,9 +16,9 @@
         width: 1920px;
         height: 1080px;
         overflow: hidden;
-        background: #fdfcfc;
-        color: #201d1d;
-        font-family: "Noto Sans JP", sans-serif;
+        background: #ffffff;
+        color: #0a0b0d;
+        font-family: Inter, "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
       }
 
       #root {
@@ -26,7 +26,7 @@
         width: 1920px;
         height: 1080px;
         overflow: hidden;
-        background: #fdfcfc;
+        background: #ffffff;
       }
 
       .scene {
@@ -35,483 +35,626 @@
         width: 1920px;
         height: 1080px;
         overflow: hidden;
-        background: #fdfcfc;
+        opacity: 0;
+      }
+
+      .scene-light {
+        background: #ffffff;
+        color: #0a0b0d;
+      }
+
+      .scene-soft {
+        background: #f7f7f7;
+        color: #0a0b0d;
+      }
+
+      .scene-dark {
+        background: #0a0b0d;
+        color: #ffffff;
       }
 
       #scene-1 {
-        z-index: 1;
-      }
-
-      #scene-2,
-      #scene-3,
-      #scene-4,
-      #scene-5 {
-        opacity: 0;
-        visibility: hidden;
-      }
-
-      #scene-2 {
-        z-index: 2;
-      }
-
-      #scene-3 {
-        z-index: 3;
-      }
-
-      #scene-4 {
-        z-index: 4;
-      }
-
-      #scene-5 {
-        z-index: 5;
+        opacity: 1;
       }
 
       .scene-content {
+        position: relative;
+        z-index: 2;
         width: 100%;
         height: 100%;
-        padding: 78px 96px 72px;
+        padding: 82px 96px 76px;
         display: flex;
         flex-direction: column;
-        gap: 28px;
-        position: relative;
+        gap: 32px;
       }
 
-      .terminal-font,
-      .eyebrow,
-      .ascii-title,
-      .code-line,
-      .node,
-      .metric,
-      .step-index,
-      .small-label {
-        font-family: "JetBrains Mono", monospace;
+      .nav {
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex: 0 0 auto;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        color: inherit;
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1;
+      }
+
+      .brand-mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 9999px;
+        background: #0052ff;
+        color: #ffffff;
+        display: grid;
+        place-items: center;
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 34px;
+        color: #5b616e;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .scene-dark .nav-links {
+        color: #a8acb3;
+      }
+
+      .pill {
+        width: fit-content;
+        min-height: 44px;
+        padding: 12px 20px;
+        border-radius: 100px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #eef0f3;
+        color: #0a0b0d;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 1.1;
+        white-space: nowrap;
+      }
+
+      .pill-blue {
+        background: #0052ff;
+        color: #ffffff;
+      }
+
+      .pill-dark {
+        background: #16181c;
+        color: #ffffff;
       }
 
       .eyebrow {
         width: fit-content;
-        padding: 8px 14px;
-        border: 1px solid rgba(15, 0, 0, 0.28);
-        border-radius: 4px;
-        color: #424245;
-        font-size: 24px;
-        line-height: 1.2;
-        background: #f8f7f7;
+        padding: 5px 14px;
+        border-radius: 100px;
+        background: #eef0f3;
+        color: #0a0b0d;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+        text-transform: uppercase;
+      }
+
+      .scene-dark .eyebrow {
+        background: #16181c;
+        color: #ffffff;
       }
 
       h1,
       h2 {
-        color: #201d1d;
+        font-weight: 400;
         letter-spacing: 0;
       }
 
       h1 {
-        max-width: 1180px;
-        font-size: 82px;
-        line-height: 1.12;
-        font-weight: 900;
+        max-width: 930px;
+        font-size: 80px;
+        line-height: 1;
       }
 
       h2 {
-        max-width: 1160px;
-        font-size: 68px;
-        line-height: 1.15;
-        font-weight: 900;
+        max-width: 1120px;
+        font-size: 64px;
+        line-height: 1.02;
+      }
+
+      h3 {
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.2;
       }
 
       .lead {
-        max-width: 1000px;
-        color: #424245;
-        font-size: 34px;
-        line-height: 1.5;
-        font-weight: 350;
-      }
-
-      .hairline {
-        width: 100%;
-        height: 1px;
-        background: rgba(15, 0, 0, 0.14);
-      }
-
-      .grid-bg {
-        position: absolute;
-        inset: 0;
-        border: 1px solid rgba(15, 0, 0, 0.08);
-        pointer-events: none;
-      }
-
-      .big-ghost {
-        position: absolute;
-        right: 52px;
-        bottom: 20px;
-        color: rgba(32, 29, 29, 0.045);
-        font-size: 220px;
-        font-weight: 900;
-        line-height: 0.9;
-        white-space: nowrap;
-      }
-
-      .big-ghost::before {
-        content: "AGENT";
-      }
-
-      .hero-layout {
-        display: grid;
-        grid-template-columns: minmax(0, 1.05fr) 660px;
-        gap: 56px;
-        align-items: center;
-        height: 100%;
-        position: relative;
-      }
-
-      .hero-copy {
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-      }
-
-      .pain-list,
-      .scenario-list,
-      .need-list {
-        display: grid;
-        gap: 14px;
-      }
-
-      .pain-item,
-      .scenario-item,
-      .need-row {
-        display: grid;
-        grid-template-columns: 72px 1fr;
-        gap: 18px;
-        align-items: start;
-        padding: 18px 20px;
-        border: 1px solid rgba(15, 0, 0, 0.16);
-        border-radius: 4px;
-        background: #f8f7f7;
-      }
-
-      .metric {
-        color: #007aff;
+        max-width: 900px;
+        color: #5b616e;
         font-size: 28px;
-        font-weight: 700;
-        line-height: 1.4;
-      }
-
-      .pain-item strong,
-      .scenario-item strong,
-      .need-row strong {
-        display: block;
-        color: #201d1d;
-        font-size: 28px;
-        line-height: 1.35;
-        margin-bottom: 4px;
-      }
-
-      .pain-item span,
-      .scenario-item span,
-      .need-row span {
-        color: #424245;
-        font-size: 22px;
-        line-height: 1.45;
-      }
-
-      .terminal-panel {
-        background: #201d1d;
-        color: #fdfcfc;
-        border: 1px solid #201d1d;
-        border-radius: 0;
-        min-height: 650px;
-        padding: 38px 34px;
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-      }
-
-      .terminal-bar {
-        color: #d7d1d1;
-        font-size: 18px;
-        display: flex;
-        justify-content: space-between;
-        padding-bottom: 18px;
-        border-bottom: 1px solid rgba(253, 252, 252, 0.18);
-      }
-
-      .ascii-title {
-        color: #fdfcfc;
-        font-size: 25px;
-        line-height: 1.18;
-        white-space: pre;
-      }
-
-      .code-line {
-        color: #fdfcfc;
-        font-size: 24px;
-        line-height: 1.55;
-      }
-
-      .code-line.dim {
-        color: #d7d1d1;
-      }
-
-      .code-line.good {
-        color: #7ee787;
-      }
-
-      .flow-layout {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-        position: relative;
-      }
-
-      .flow-top {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) 460px;
-        gap: 52px;
-        align-items: end;
-      }
-
-      .pipeline {
-        flex: 1;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 1fr 1fr;
-        gap: 24px;
-        align-items: stretch;
-      }
-
-      .node {
-        min-height: 154px;
-        padding: 22px;
-        border: 1px solid rgba(15, 0, 0, 0.22);
-        border-radius: 4px;
-        background: #f8f7f7;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
-
-      .node.wide {
-        grid-column: span 2;
-      }
-
-      .node.dark {
-        background: #201d1d;
-        color: #fdfcfc;
-      }
-
-      .node .tag {
-        color: #646262;
-        font-size: 18px;
-      }
-
-      .node.dark .tag {
-        color: #d7d1d1;
-      }
-
-      .node .name {
-        font-size: 28px;
-        line-height: 1.25;
-        font-weight: 700;
-      }
-
-      .node .desc {
-        color: #424245;
-        font-size: 20px;
-        line-height: 1.35;
-      }
-
-      .node.dark .desc {
-        color: #d7d1d1;
-      }
-
-      .connector {
-        align-self: center;
-        color: #646262;
-        font-size: 38px;
-      }
-
-      .mode-board {
-        height: 100%;
-        display: grid;
-        grid-template-columns: 580px 1fr;
-        gap: 54px;
-        align-items: center;
-      }
-
-      .control-mock {
-        border: 1px solid rgba(15, 0, 0, 0.22);
-        border-radius: 4px;
-        background: #f8f7f7;
-        padding: 28px;
-        display: flex;
-        flex-direction: column;
-        gap: 22px;
-      }
-
-      .field-block {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .field-block label {
-        color: #646262;
-        font-size: 20px;
-        line-height: 1.3;
-      }
-
-      .input-line,
-      .segment-row,
-      .run-button {
-        border: 1px solid rgba(15, 0, 0, 0.2);
-        border-radius: 4px;
-        background: #fdfcfc;
-        color: #201d1d;
-        min-height: 58px;
-        padding: 14px 16px;
-        font-size: 23px;
-        line-height: 1.25;
-      }
-
-      .segment-row {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-        background: #f1eeee;
-      }
-
-      .pill {
-        padding: 10px 8px;
-        text-align: center;
-        border-radius: 4px;
-        color: #646262;
-        font-size: 20px;
-      }
-
-      .pill.active {
-        background: #fdfcfc;
-        color: #201d1d;
-        border: 1px solid #201d1d;
-      }
-
-      .run-button {
-        background: #fdfcfc;
-        color: #201d1d;
-        border-color: #201d1d;
-        font-weight: 700;
-        text-align: center;
-      }
-
-      .steps {
-        display: grid;
-        gap: 16px;
-      }
-
-      .step {
-        display: grid;
-        grid-template-columns: 72px 1fr;
-        gap: 20px;
-        align-items: center;
-        padding: 20px 24px;
-        border-bottom: 1px solid rgba(15, 0, 0, 0.14);
-      }
-
-      .step-index {
-        font-size: 30px;
-        color: #007aff;
-        font-weight: 700;
-      }
-
-      .step strong {
-        display: block;
-        font-size: 31px;
-        line-height: 1.25;
-      }
-
-      .step span {
-        display: block;
-        margin-top: 4px;
-        color: #424245;
-        font-size: 23px;
+        font-weight: 400;
         line-height: 1.42;
       }
 
-      .scenario-grid {
-        flex: 1;
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 22px;
+      .scene-dark .lead,
+      .scene-dark .muted {
+        color: #a8acb3;
       }
 
-      .scenario-item {
-        grid-template-columns: 92px 1fr;
-        min-height: 184px;
+      .muted {
+        color: #5b616e;
+      }
+
+      .mono,
+      .metric,
+      .ticker-price,
+      .change,
+      .code-label {
+        font-family: "JetBrains Mono", "Geist Mono", "Cascadia Code", monospace;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 690px;
+        gap: 76px;
         align-items: center;
+        flex: 1 1 auto;
       }
 
-      .scenario-code {
-        color: #007aff;
-        font-size: 27px;
-        font-weight: 700;
+      .copy-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
       }
 
-      .need-layout {
-        height: 100%;
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) 640px;
-        gap: 54px;
+      .cta-row {
+        display: flex;
+        gap: 14px;
         align-items: center;
+        margin-top: 6px;
       }
 
-      .need-stack {
+      .dashboard-stack {
+        position: relative;
+        width: 690px;
+        height: 710px;
+      }
+
+      .ui-card {
+        border-radius: 24px;
+        background: #ffffff;
+        border: 1px solid #dee1e6;
+        overflow: hidden;
+      }
+
+      .scene-dark .ui-card {
+        background: #16181c;
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+
+      .main-terminal {
+        position: absolute;
+        inset: 54px 0 auto 42px;
+        width: 594px;
+        min-height: 540px;
+        padding: 30px;
+        color: #ffffff;
+        background: #16181c;
+      }
+
+      .floating-ticket {
+        position: absolute;
+        right: 8px;
+        bottom: 22px;
+        width: 392px;
+        padding: 26px;
+        background: #ffffff;
+        color: #0a0b0d;
+      }
+
+      .mini-ticket {
+        position: absolute;
+        left: 0;
+        bottom: 94px;
+        width: 304px;
+        padding: 22px;
+        background: #ffffff;
+        color: #0a0b0d;
+      }
+
+      .card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 22px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 22px;
+      }
+
+      .card-head.light {
+        border-bottom-color: #eef0f3;
+      }
+
+      .stat-row,
+      .asset-row,
+      .agent-row,
+      .ticket-row,
+      .stage-row {
         display: grid;
+        align-items: center;
         gap: 16px;
       }
 
-      .closing-panel {
-        min-height: 620px;
-        background: #201d1d;
-        color: #fdfcfc;
+      .stat-row {
+        grid-template-columns: 1fr 120px;
+        min-height: 58px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .stat-row:last-child {
+        border-bottom: 0;
+      }
+
+      .asset-row {
+        grid-template-columns: 46px minmax(0, 1fr) 132px 96px;
+        min-height: 70px;
+        border-bottom: 1px solid #eef0f3;
+      }
+
+      .asset-row:last-child {
+        border-bottom: 0;
+      }
+
+      .asset-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 9999px;
+        display: grid;
+        place-items: center;
+        background: #eef0f3;
+        color: #0a0b0d;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .ticker-price {
+        font-size: 18px;
+        font-weight: 500;
+        color: #0a0b0d;
+        text-align: right;
+      }
+
+      .change {
+        font-size: 16px;
+        font-weight: 500;
+        text-align: right;
+      }
+
+      .up {
+        color: #05b169;
+      }
+
+      .down {
+        color: #cf202f;
+      }
+
+      .section-grid {
+        display: grid;
+        grid-template-columns: 0.86fr 1.14fr;
+        gap: 56px;
+        flex: 1 1 auto;
+        align-items: center;
+      }
+
+      .section-grid.reverse {
+        grid-template-columns: 1.12fr 0.88fr;
+      }
+
+      .source-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+      }
+
+      .source-card,
+      .feature-card {
+        min-height: 210px;
+        padding: 30px;
+        border-radius: 24px;
+        background: #ffffff;
+        border: 1px solid #dee1e6;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .source-card p,
+      .feature-card p,
+      .agent-row p,
+      .ticket-row span,
+      .stage-row span {
+        color: #5b616e;
+        font-size: 17px;
+        line-height: 1.45;
+      }
+
+      .code-label {
+        width: fit-content;
+        padding: 4px 12px;
+        border-radius: 100px;
+        background: #eef0f3;
+        color: #0a0b0d;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .code-label.blue {
+        background: #0052ff;
+        color: #ffffff;
+      }
+
+      .quote-panel {
         padding: 42px;
+        border-radius: 24px;
+        background: #0a0b0d;
+        color: #ffffff;
+      }
+
+      .quote-panel strong {
+        display: block;
+        font-size: 56px;
+        font-weight: 400;
+        line-height: 1.1;
+      }
+
+      .market-board {
+        padding: 32px;
+        min-height: 612px;
+      }
+
+      .chart-wrap {
+        height: 240px;
+        padding: 24px 10px 0;
+        border-bottom: 1px solid #dee1e6;
+        display: flex;
+        align-items: flex-end;
+        gap: 18px;
+      }
+
+      .bar {
+        flex: 1;
+        border-radius: 8px 8px 0 0;
+        background: #0052ff;
+        min-height: 28px;
+      }
+
+      .bar.soft {
+        background: #eef0f3;
+      }
+
+      .bar.green {
+        background: #05b169;
+      }
+
+      .evidence-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+        margin-top: 28px;
+      }
+
+      .evidence-tile {
+        padding: 20px;
+        border-radius: 16px;
+        background: #f7f7f7;
+      }
+
+      .metric {
+        font-size: 26px;
+        font-weight: 500;
+        line-height: 1;
+      }
+
+      .agent-map {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+
+      .agent-row {
+        min-height: 236px;
+        padding: 26px;
+        border-radius: 24px;
+        background: #16181c;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #ffffff;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
       }
 
-      .closing-panel .small-label {
-        color: #d7d1d1;
+      .agent-row p {
+        color: #a8acb3;
+      }
+
+      .agent-row.blue {
+        background: #0052ff;
+        border-color: #0052ff;
+      }
+
+      .agent-row.blue p,
+      .agent-row.blue .code-label {
+        color: #ffffff;
+      }
+
+      .agent-row.blue .code-label {
+        background: rgba(255, 255, 255, 0.18);
+      }
+
+      .risk-ticket {
+        padding: 34px;
+        min-height: 650px;
+      }
+
+      .ticket-row {
+        grid-template-columns: 96px minmax(0, 1fr);
+        min-height: 84px;
+        border-bottom: 1px solid #eef0f3;
+      }
+
+      .ticket-row:last-child {
+        border-bottom: 0;
+      }
+
+      .ticket-row strong {
+        font-size: 21px;
+        font-weight: 600;
+      }
+
+      .control-panel {
+        padding: 34px;
+        min-height: 660px;
+      }
+
+      .mode-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+      }
+
+      .mode {
+        min-height: 58px;
+        border-radius: 100px;
+        background: #eef0f3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .mode.active {
+        background: #0052ff;
+        color: #ffffff;
+      }
+
+      .form-block {
+        margin-top: 26px;
+      }
+
+      .form-block label {
+        display: block;
+        color: #5b616e;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .input-box {
+        min-height: 54px;
+        border-radius: 14px;
+        border: 1px solid #dee1e6;
+        display: flex;
+        align-items: center;
+        padding: 0 18px;
+        color: #0a0b0d;
+        font-size: 18px;
+      }
+
+      .run-button {
+        margin-top: 28px;
+        width: 100%;
+        height: 58px;
+        border-radius: 100px;
+        background: #0052ff;
+        color: #ffffff;
+        display: grid;
+        place-items: center;
+        font-size: 17px;
+        font-weight: 600;
+      }
+
+      .stage-list {
+        display: grid;
+        gap: 16px;
+      }
+
+      .stage-row {
+        grid-template-columns: 74px minmax(0, 1fr);
+        min-height: 96px;
+        padding: 20px 24px;
+        border-radius: 18px;
+        background: #ffffff;
+        border: 1px solid #dee1e6;
+      }
+
+      .closing-grid {
+        display: grid;
+        grid-template-columns: 1fr 540px;
+        gap: 72px;
+        align-items: center;
+        flex: 1 1 auto;
+      }
+
+      .final-card {
+        padding: 34px;
+        border-radius: 24px;
+        background: #16181c;
+        color: #ffffff;
+      }
+
+      .final-card h3 {
+        margin: 22px 0 14px;
+        font-size: 36px;
+        font-weight: 400;
+        line-height: 1.12;
+      }
+
+      .final-card p {
+        color: #a8acb3;
         font-size: 20px;
-      }
-
-      .closing-panel h3 {
-        font-size: 58px;
-        line-height: 1.16;
-        font-weight: 900;
-        letter-spacing: 0;
-      }
-
-      .closing-panel p {
-        color: #d7d1d1;
-        font-size: 26px;
-        line-height: 1.5;
-      }
-
-      .disclaimer {
-        border-top: 1px solid rgba(253, 252, 252, 0.18);
-        padding-top: 22px;
-        color: #9a9898;
-        font-size: 22px;
         line-height: 1.45;
       }
 
-      .scanline {
+      .disclaimer {
+        margin-top: 28px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: #a8acb3;
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      .blue-line {
         position: absolute;
-        left: 0;
-        right: 0;
-        height: 2px;
-        top: 0;
-        background: rgba(0, 122, 255, 0.48);
+        left: 96px;
+        right: 96px;
+        bottom: 54px;
+        height: 4px;
+        border-radius: 100px;
+        background: #0052ff;
+        transform-origin: left center;
+      }
+
+      .soft-ring {
+        position: absolute;
+        width: 620px;
+        height: 620px;
+        right: -190px;
+        top: -190px;
+        border: 1px solid rgba(0, 82, 255, 0.18);
+        border-radius: 9999px;
       }
     </style>
   </head>
@@ -520,219 +663,264 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="42"
       data-width="1920"
       data-height="1080"
+      data-duration="188.53"
     >
       <audio
         id="narration"
-        data-start="0.4"
-        data-duration="38.36"
-        data-track-index="9"
-        src="assets/narration_zh.wav"
-        data-volume="0.95"
+        data-start="0"
+        data-duration="188.53"
+        data-track-index="10"
+        src="assets/narration_minimax.mp3"
+        data-volume="1"
       ></audio>
 
-      <section id="scene-1" class="scene clip" data-start="0" data-duration="7.24" data-track-index="1">
-        <div class="grid-bg" data-layout-ignore></div>
-        <div class="big-ghost terminal-font" data-layout-ignore></div>
-        <div class="scene-content hero-layout">
-          <div class="hero-copy">
-            <div class="eyebrow">multi-Agent-Inv / project background</div>
-            <h1>多 Agent 股票决策系统</h1>
-            <p class="lead">
-              把行情、基本面、市场情绪和风险约束放进同一条分析流水线，让投研判断不再只靠单一视角。
-            </p>
-            <div class="pain-list">
-              <div class="pain-item">
-                <div class="metric">01</div>
-                <div><strong>信息太分散</strong><span>行情、政策、资金和财务数据需要跨来源整理。</span></div>
-              </div>
-              <div class="pain-item">
-                <div class="metric">02</div>
-                <div><strong>观点容易偏</strong><span>系统用多头、空头和裁判角色形成结构化辩论。</span></div>
-              </div>
-              <div class="pain-item">
-                <div class="metric">03</div>
-                <div><strong>风险需要前置</strong><span>风控和组合管理在最终决策前复核仓位、触发价和约束。</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="terminal-panel">
-            <div class="terminal-bar terminal-font"><span>stock.supersaiyan.online</span><span>research mode</span></div>
-            <pre class="ascii-title">+---------------------------+
-| STOCK DECISION SYSTEM    |
-| MULTI AGENT INVESTIGATOR |
-+---------------------------+</pre>
-            <div class="code-line dim">&gt; task: 扫描未来 1 个月 A 股机会</div>
-            <div class="code-line">&gt; route: question -&gt; information -&gt; debate</div>
-            <div class="code-line">&gt; agents: bull + bear + judge + risk</div>
-            <div class="code-line good">&gt; output: 分析报告 + 交易决策展示</div>
-          </div>
-        </div>
-      </section>
-
-      <section id="scene-2" class="scene clip" data-start="6.7" data-duration="8.6" data-track-index="2">
-        <div class="grid-bg" data-layout-ignore></div>
-        <div class="scene-content flow-layout">
-          <div class="flow-top">
-            <div>
-              <div class="eyebrow">how it works / agent pipeline</div>
-              <h2>一次分析，被拆成一支投研团队</h2>
-            </div>
-            <p class="lead">每个 Agent 负责一个明确角色，最后由风控和总经理阶段收束成可执行的决策展示。</p>
-          </div>
-          <div class="hairline"></div>
-          <div class="pipeline">
-            <div class="node">
-              <div class="tag">01 / question</div>
-              <div class="name">问题理解</div>
-              <div class="desc">解析任务、股票代码、市场范围和风险偏好。</div>
-            </div>
-            <div class="connector terminal-font">-&gt;</div>
-            <div class="node wide">
-              <div class="tag">02 / information</div>
-              <div class="name">信息分析</div>
-              <div class="desc">收集行情、宏观、A 股指标、资金流和公司信息。</div>
-            </div>
-            <div class="node dark">
-              <div class="tag">03 / debate</div>
-              <div class="name">多头 Agent</div>
-              <div class="desc">寻找估值修复、成长性、政策和资金催化。</div>
-            </div>
-            <div class="node dark">
-              <div class="tag">04 / debate</div>
-              <div class="name">空头 Agent</div>
-              <div class="desc">检视回撤、估值、盈利下滑和技术破位风险。</div>
-            </div>
-            <div class="node">
-              <div class="tag">05 / decision</div>
-              <div class="name">裁判 Agent</div>
-              <div class="desc">综合多空论点，给出更克制的判断。</div>
-            </div>
-            <div class="node">
-              <div class="tag">06 / risk</div>
-              <div class="name">风控复核</div>
-              <div class="desc">检查仓位、止损、资金规模和执行风险。</div>
-            </div>
-            <div class="connector terminal-font">-&gt;</div>
-            <div class="node wide dark">
-              <div class="tag">07 / output</div>
-              <div class="name">总经理 + 交易计划</div>
-              <div class="desc">输出最终报告、价格触发条件和决策展示。</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="scene-3" class="scene clip" data-start="14.6" data-duration="9.1" data-track-index="1">
-        <div class="grid-bg" data-layout-ignore></div>
-        <div class="scene-content mode-board">
-          <div class="control-mock">
-            <div class="eyebrow">usage / web console</div>
-            <div class="field-block">
-              <label>运行模式</label>
-              <div class="segment-row">
-                <div class="pill active">每日扫描</div>
-                <div class="pill">指定板块</div>
-                <div class="pill">指定个股</div>
-                <div class="pill">通用分析</div>
-              </div>
-            </div>
-            <div class="field-block">
-              <label>OpenRouter API Key</label>
-              <div class="input-line terminal-font">sk-or-v1-********</div>
-            </div>
-            <div class="field-block">
-              <label>任务描述</label>
-              <div class="input-line">扫描市场，找出未来 1 个月最具投资价值的 A 股股票</div>
-            </div>
-            <div class="field-block">
-              <label>风险偏好 / 可用资金</label>
-              <div class="input-line">稳健 / 1,000,000 元</div>
-            </div>
-            <div class="run-button">运行决策</div>
-          </div>
-          <div class="steps">
-            <div>
-              <h2>使用路径很短，分析链路很长</h2>
-              <p class="lead">用户只需要提交任务和约束，系统负责把每个阶段的过程、摘要、原文和数据来源展示出来。</p>
-            </div>
-            <div class="step">
-              <div class="step-index">01</div>
-              <div><strong>选择运行模式</strong><span>通用分析、每日扫描、指定板块或指定个股。</span></div>
-            </div>
-            <div class="step">
-              <div class="step-index">02</div>
-              <div><strong>填写关键参数</strong><span>API Key、股票代码、板块、资金规模、风险偏好和任务描述。</span></div>
-            </div>
-            <div class="step">
-              <div class="step-index">03</div>
-              <div><strong>查看实时流水线</strong><span>左侧输入，中间阶段进度，右侧切换摘要、原文和数据源。</span></div>
-            </div>
-            <div class="step">
-              <div class="step-index">04</div>
-              <div><strong>读取最终决策</strong><span>输出完整报告、风险提示和价格触发式交易计划。</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="scene-4" class="scene clip" data-start="23.1" data-duration="8.7" data-track-index="2">
-        <div class="grid-bg" data-layout-ignore></div>
+      <section id="scene-1" class="scene scene-dark clip" data-start="0" data-duration="18.8" data-track-index="1">
         <div class="scene-content">
-          <div class="eyebrow">use cases / research scenarios</div>
-          <h2>适合这些高频投研场景</h2>
-          <p class="lead">它不是替代判断，而是把信息整理、观点交锋和风险复核做成可复用的工作台。</p>
-          <div class="hairline"></div>
-          <div class="scenario-grid">
-            <div class="scenario-item">
-              <div class="scenario-code terminal-font">SCAN</div>
-              <div><strong>A 股每日扫描</strong><span>从全市场候选池中筛出未来一个月更值得关注的标的。</span></div>
+          <div class="nav">
+            <div class="brand"><div class="brand-mark">M</div><span>multi-Agent-Inv</span></div>
+            <div class="nav-links"><span>Research</span><span>Agents</span><span>Risk</span><span class="pill pill-dark">Open Console</span></div>
+          </div>
+          <div class="hero-grid">
+            <div class="copy-stack">
+              <div class="eyebrow">Stock Decision System</div>
+              <h1>股票分析最难的，不是信息少。</h1>
+              <p class="lead">是信息太多。研报、新闻、KOL、评论区都在说，但真正值得看的，是市场行为。</p>
+              <div class="cta-row"><div class="pill pill-blue">用多 Agent 查证据</div><div class="pill pill-dark">不是投资建议</div></div>
             </div>
-            <div class="scenario-item">
-              <div class="scenario-code terminal-font">SECTOR</div>
-              <div><strong>指定板块分析</strong><span>围绕半导体、新能源、白酒等板块做强弱和机会判断。</span></div>
-            </div>
-            <div class="scenario-item">
-              <div class="scenario-code terminal-font">DEEP</div>
-              <div><strong>个股深度研究</strong><span>针对 600519、300750 等代码输出多空论点和交易策略。</span></div>
-            </div>
-            <div class="scenario-item">
-              <div class="scenario-code terminal-font">COMMON</div>
-              <div><strong>通用股票研究</strong><span>分析美股、ETF 或自定义标的的中短期投资机会。</span></div>
+            <div class="dashboard-stack">
+              <div class="ui-card main-terminal">
+                <div class="card-head"><span class="mono">live evidence</span><span class="up mono">online</span></div>
+                <div class="stat-row"><span>NASDAQ / AAPL</span><strong class="mono up">+1.84%</strong></div>
+                <div class="stat-row"><span>Options IV</span><strong class="mono">42.7</strong></div>
+                <div class="stat-row"><span>EDGAR filing</span><strong class="mono">13F</strong></div>
+                <div class="stat-row"><span>CME FedWatch</span><strong class="mono down">shift</strong></div>
+                <div class="stat-row"><span>Risk budget</span><strong class="mono">2.0%</strong></div>
+              </div>
+              <div class="ui-card floating-ticket">
+                <div class="card-head light"><span class="mono">decision</span><span class="code-label blue">draft</span></div>
+                <h3>先停下来，看真实发生了什么。</h3>
+              </div>
+              <div class="ui-card mini-ticket">
+                <div class="metric up">+18.6%</div>
+                <p class="muted">成交放大，不等于结论，但它是证据。</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="scene-5" class="scene clip" data-start="31.2" data-duration="10.8" data-track-index="1">
-        <div class="grid-bg" data-layout-ignore></div>
-        <div class="scene-content need-layout">
-          <div>
-            <div class="eyebrow">requirement analysis / value</div>
-            <h2>核心需求：追踪、复核、执行</h2>
-            <p class="lead">从输入到最终计划，系统要把“为什么这么判断”留在界面里，而不是只给一个结论。</p>
-            <div class="need-stack">
-              <div class="need-row">
-                <div class="metric">IN</div>
-                <div><strong>输入清晰</strong><span>模式、标的、板块、资金和风险偏好决定分析边界。</span></div>
-              </div>
-              <div class="need-row">
-                <div class="metric">DATA</div>
-                <div><strong>数据可追踪</strong><span>信息分析阶段保留来源、成功状态和数据摘要。</span></div>
-              </div>
-              <div class="need-row">
-                <div class="metric">OUT</div>
-                <div><strong>结果可落地</strong><span>最终输出报告、触发价、风险提示和交易计划 JSON。</span></div>
-              </div>
+      <section id="scene-2" class="scene scene-light clip" data-start="17.8" data-duration="20.6" data-track-index="2">
+        <div class="soft-ring" data-layout-ignore></div>
+        <div class="scene-content">
+          <div class="nav">
+            <div class="brand"><div class="brand-mark">M</div><span>multi-Agent-Inv</span></div>
+            <div class="nav-links"><span>US Stocks</span><span>A Share</span><span>Macro</span><span>Prediction</span></div>
+          </div>
+          <div class="section-grid">
+            <div class="copy-stack">
+              <div class="eyebrow">first principle</div>
+              <h2>不要看他说了什么。要看他做了什么。</h2>
+              <p class="lead">这个项目不是把一堆观点丢给模型总结，而是先去找数据，再让角色分工辩论。</p>
+            </div>
+            <div class="quote-panel">
+              <div class="code-label blue">PROJECT THESIS</div>
+              <strong>把投研从听故事，变成查行为。</strong>
             </div>
           </div>
-          <div class="closing-panel">
-            <div class="small-label">STOCK DECISION SYSTEM</div>
-            <h3>让多 Agent 协作，变成一条可见的投研流水线。</h3>
-            <p>适合辅助研究、复盘推理链路、比较不同标的和沉淀团队式分析流程。</p>
-            <div class="disclaimer">系统输出仅用于研究和辅助分析，不代表确定收益，也不构成投资建议。</div>
+        </div>
+      </section>
+
+      <section id="scene-3" class="scene scene-soft clip" data-start="37.4" data-duration="20.8" data-track-index="1">
+        <div class="scene-content">
+          <div class="copy-stack">
+            <div class="eyebrow">data layer</div>
+            <h2>它真正干的事情，是先去找数据。</h2>
+          </div>
+          <div class="source-grid">
+            <div class="source-card">
+              <div class="code-label blue">US MARKET</div>
+              <div><h3>美股证据</h3><p>日线、周线、期权、EDGAR 财报和公告，先看价格、披露和定价。</p></div>
+            </div>
+            <div class="source-card">
+              <div class="code-label">A SHARE</div>
+              <div><h3>A 股证据</h3><p>腾讯行情、指数、本地股票池、板块概念，也能接入 Tushare 与 mootdx。</p></div>
+            </div>
+            <div class="source-card">
+              <div class="code-label">MACRO</div>
+              <div><h3>宏观预期</h3><p>美债收益率、汇率、恐惧贪婪指数、CME FedWatch、CFTC 持仓。</p></div>
+            </div>
+            <div class="source-card">
+              <div class="code-label">PREDICTION</div>
+              <div><h3>预测市场</h3><p>Kalshi、Polymarket，用真实交易价格观察更大的市场预期。</p></div>
+            </div>
+          </div>
+          <div class="blue-line" data-layout-ignore></div>
+        </div>
+      </section>
+
+      <section id="scene-4" class="scene scene-light clip" data-start="57.2" data-duration="19.6" data-track-index="2">
+        <div class="scene-content">
+          <div class="section-grid reverse">
+            <div class="ui-card market-board">
+              <div class="card-head light"><span class="mono">behavior terminal</span><span class="code-label blue">evidence</span></div>
+              <div class="chart-wrap">
+                <div class="bar soft" style="height: 34%"></div>
+                <div class="bar" style="height: 48%"></div>
+                <div class="bar soft" style="height: 42%"></div>
+                <div class="bar green" style="height: 58%"></div>
+                <div class="bar" style="height: 72%"></div>
+                <div class="bar soft" style="height: 51%"></div>
+                <div class="bar green" style="height: 80%"></div>
+                <div class="bar" style="height: 68%"></div>
+              </div>
+              <div class="evidence-grid">
+                <div class="evidence-tile"><div class="metric up">+24%</div><p class="muted">成交量变化</p></div>
+                <div class="evidence-tile"><div class="metric">IV 42</div><p class="muted">期权重新定价</p></div>
+                <div class="evidence-tile"><div class="metric">10Y</div><p class="muted">利率预期</p></div>
+                <div class="evidence-tile"><div class="metric down">risk</div><p class="muted">反证增强</p></div>
+              </div>
+            </div>
+            <div class="copy-stack">
+              <div class="eyebrow">behavior over opinion</div>
+              <h2>它问的是资金怎么动，价格怎么走。</h2>
+              <p class="lead">价格、成交、期权定价、机构披露、宏观预期，这些行为比一句“看好”更可检查。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="scene-5" class="scene scene-dark clip" data-start="75.8" data-duration="21.4" data-track-index="1">
+        <div class="scene-content">
+          <div class="copy-stack">
+            <div class="eyebrow">agent pipeline</div>
+            <h2>一次模糊的投研问题，被拆成一条可检查的链路。</h2>
+            <p class="lead">每个 Agent 只承担一个角色，让系统形成结构化辩论，而不是顺着单一观点往下编。</p>
+          </div>
+          <div class="agent-map">
+            <div class="agent-row"><div class="code-label">01 / parse</div><div><h3>问题理解 Agent</h3><p>判断你问的是个股、板块，还是全市场扫描。</p></div></div>
+            <div class="agent-row"><div class="code-label">02 / collect</div><div><h3>信息 Agent</h3><p>按边界收集行情、宏观、公告、板块和预测市场证据。</p></div></div>
+            <div class="agent-row blue"><div class="code-label">03 / upside</div><div><h3>多头 Agent</h3><p>只负责找上涨逻辑、催化因素和正向证据。</p></div></div>
+            <div class="agent-row"><div class="code-label">04 / downside</div><div><h3>空头 Agent</h3><p>只负责挑刺，找风险、反证和可能失效的条件。</p></div></div>
+            <div class="agent-row"><div class="code-label">05 / judge</div><div><h3>裁判 Agent</h3><p>把多空放到一起，不让系统只听自己想听的话。</p></div></div>
+            <div class="agent-row blue"><div class="code-label">06 / plan</div><div><h3>总经理 Agent</h3><p>把证据、反证和限制条件合成最终交易计划。</p></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="scene-6" class="scene scene-light clip" data-start="96.2" data-duration="21.1" data-track-index="2">
+        <div class="scene-content">
+          <div class="section-grid">
+            <div class="copy-stack">
+              <div class="eyebrow">structured debate</div>
+              <h2>上涨和下跌，都必须拿证据说话。</h2>
+              <p class="lead">上涨不是因为大家都说看好，而是价格有没有走出来、成交有没有配合、财报和板块有没有共振。</p>
+            </div>
+            <div class="ui-card market-board">
+              <div class="card-head light"><span class="mono">candidate basket</span><span class="code-label blue">AAPL / MSFT / NVDA</span></div>
+              <div class="asset-row"><div class="asset-icon">A</div><div><h3>AAPL</h3><p class="muted">财报 + 回购 + 趋势</p></div><div class="ticker-price">$203.11</div><div class="change up">+1.8%</div></div>
+              <div class="asset-row"><div class="asset-icon">M</div><div><h3>MSFT</h3><p class="muted">云增长 + AI 资本开支</p></div><div class="ticker-price">$486.20</div><div class="change up">+0.9%</div></div>
+              <div class="asset-row"><div class="asset-icon">N</div><div><h3>NVDA</h3><p class="muted">波动率 + 估值压力</p></div><div class="ticker-price">$141.64</div><div class="change down">-2.1%</div></div>
+              <div class="asset-row"><div class="asset-icon">S</div><div><h3>Sector</h3><p class="muted">半导体板块共振</p></div><div class="ticker-price">scan</div><div class="change up">active</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="scene-7" class="scene scene-soft clip" data-start="116.3" data-duration="20.9" data-track-index="1">
+        <div class="scene-content">
+          <div class="section-grid reverse">
+            <div class="ui-card risk-ticket">
+              <div class="card-head light"><span class="mono">trade_plan.json</span><span class="code-label blue">risk first</span></div>
+              <div class="ticket-row"><span class="mono">CAP</span><div><strong>资金规模</strong><span>这笔交易最多占用多少资金。</span></div></div>
+              <div class="ticket-row"><span class="mono">LOSS</span><div><strong>最大亏损</strong><span>错了以后要在哪里承认错误。</span></div></div>
+              <div class="ticket-row"><span class="mono">SIZE</span><div><strong>仓位计划</strong><span>分批、止损、加仓与退出条件。</span></div></div>
+              <div class="ticket-row"><span class="mono">EXIT</span><div><strong>失效条件</strong><span>宏观转向、资金撤离、反证增强。</span></div></div>
+            </div>
+            <div class="copy-stack">
+              <div class="eyebrow">risk control</div>
+              <h2>最后一个问题很现实：你最多能亏多少？</h2>
+              <p class="lead">风控 Agent 把“看好”翻译成资金规模、仓位、止损和触发条件，避免只有观点没有执行边界。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="scene-8" class="scene scene-light clip" data-start="136.2" data-duration="21.1" data-track-index="2">
+        <div class="scene-content">
+          <div class="section-grid">
+            <div class="ui-card control-panel">
+              <div class="card-head light"><span class="mono">web console</span><span class="code-label blue">online</span></div>
+              <div class="mode-grid">
+                <div class="mode active">A 股每日扫描</div>
+                <div class="mode">指定板块</div>
+                <div class="mode">指定个股</div>
+                <div class="mode">通用分析</div>
+              </div>
+              <div class="form-block">
+                <label>任务描述</label>
+                <div class="input-box">扫描全市场，找出未来一个月值得研究的 A 股标的</div>
+              </div>
+              <div class="form-block">
+                <label>板块示例</label>
+                <div class="input-box">半导体 / 新能源 / 机器人 / 医药</div>
+              </div>
+              <div class="form-block">
+                <label>风险偏好</label>
+                <div class="input-box">稳健，单笔最大亏损 2%</div>
+              </div>
+              <div class="run-button">运行决策</div>
+            </div>
+            <div class="copy-stack">
+              <div class="eyebrow">project surface</div>
+              <h2>它现在支持四种使用方式。</h2>
+              <p class="lead">通用分析、A 股每日扫描、指定板块、指定个股。你可以让它扫描市场，也可以让它深入一个板块。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="scene-9" class="scene scene-soft clip" data-start="156.3" data-duration="19" data-track-index="1">
+        <div class="scene-content">
+          <div class="section-grid reverse">
+            <div class="stage-list">
+              <div class="stage-row"><div class="metric">ASK</div><div><h3>问题怎么被理解</h3><span>标的、市场、板块和扫描范围被拆出来。</span></div></div>
+              <div class="stage-row"><div class="metric">DATA</div><div><h3>数据怎么被收集</h3><span>每一阶段保留摘要、原文和来源状态。</span></div></div>
+              <div class="stage-row"><div class="metric">BULL</div><div><h3>多头怎么讲</h3><span>上涨逻辑和催化因素被单独呈现。</span></div></div>
+              <div class="stage-row"><div class="metric">BEAR</div><div><h3>空头怎么反驳</h3><span>风险证据、反证和失效条件并排出现。</span></div></div>
+              <div class="stage-row"><div class="metric">PLAN</div><div><h3>最后怎么形成计划</h3><span>仓位、止损、观察条件和决策理由落到页面上。</span></div></div>
+            </div>
+            <div class="copy-stack">
+              <div class="eyebrow">visible process</div>
+              <h2>页面上能看到每个 Agent 的阶段输出。</h2>
+              <p class="lead">不是只给最后答案，而是把问题理解、数据来源、多空论点、风控限制和最终计划留在界面里。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="scene-10" class="scene scene-dark clip" data-start="174.2" data-duration="14.33" data-track-index="2">
+        <div class="scene-content">
+          <div class="nav">
+            <div class="brand"><div class="brand-mark">M</div><span>multi-Agent-Inv</span></div>
+            <div class="nav-links"><span>Evidence</span><span>Debate</span><span>Risk</span></div>
+          </div>
+          <div class="closing-grid">
+            <div class="copy-stack">
+              <div class="eyebrow">closing</div>
+              <h2>在被情绪带着跑之前，先看一眼真实发生了什么。</h2>
+              <p class="lead">这就是 multi-Agent-Inv 做的事情。</p>
+              <div class="quote-panel">
+                <strong>不要看他说了什么。<br />要看他做了什么。</strong>
+              </div>
+            </div>
+            <div class="final-card">
+              <div class="code-label blue">STOCK DECISION SYSTEM</div>
+              <h3>多 Agent 股票投研决策系统</h3>
+              <p>用证据链辅助研究，把行情、宏观、基本面、情绪和风险约束放到同一条分析链路里。</p>
+              <div class="disclaimer">系统输出仅用于研究和辅助分析，不代表确定收益，也不构成投资建议。</div>
+            </div>
           </div>
         </div>
       </section>
@@ -743,59 +931,89 @@
 
       const tl = gsap.timeline({ paused: true });
 
+      function addFrom(selector, vars, at) {
+        if (document.querySelector(selector)) {
+          tl.from(selector, vars, at);
+        }
+      }
+
+      function addTo(selector, vars, at) {
+        if (document.querySelector(selector)) {
+          tl.to(selector, vars, at);
+        }
+      }
+
+      function addSet(selector, vars, at) {
+        if (document.querySelector(selector)) {
+          tl.set(selector, vars, at);
+        }
+      }
+
       function enterScene(scene, at) {
-        tl.from(scene + " .eyebrow", { y: 34, opacity: 0, duration: 0.48, ease: "power3.out" }, at + 0.18);
-        tl.from(scene + " h1, " + scene + " h2", { x: -42, opacity: 0, duration: 0.62, ease: "expo.out" }, at + 0.34);
-        tl.from(scene + " .lead", { y: 26, opacity: 0, duration: 0.52, ease: "back.out(1.35)" }, at + 0.58);
+        addSet(scene, { opacity: 1 }, at);
+        addSet(scene + " .scene-content", { opacity: 1, y: 0 }, at);
+        addFrom(scene + " .nav", { y: -24, opacity: 0, duration: 0.55, ease: "power3.out" }, at + 0.18);
+        addFrom(scene + " .eyebrow", { y: 24, opacity: 0, duration: 0.45, ease: "power3.out" }, at + 0.35);
+        addFrom(scene + " h1, " + scene + " h2", { y: 46, opacity: 0, duration: 0.72, ease: "expo.out" }, at + 0.52);
+        addFrom(scene + " .lead", { y: 28, opacity: 0, duration: 0.52, ease: "power3.out" }, at + 0.88);
+        addFrom(scene + " .pill", { y: 18, opacity: 0, duration: 0.4, stagger: 0.08, ease: "power2.out" }, at + 1.12);
+        addFrom(scene + " .blue-line", { scaleX: 0, duration: 2.2, ease: "power2.out" }, at + 1.0);
       }
 
-      function pushTransition(oldScene, newScene, at) {
-        tl.set(newScene, { x: 1920, opacity: 1, visibility: "visible" }, at);
-        tl.to(oldScene, { x: -1920, duration: 0.52, ease: "power3.inOut" }, at);
-        tl.to(newScene, { x: 0, duration: 0.52, ease: "power3.inOut" }, at);
-        tl.set(oldScene, { opacity: 0, x: 0, visibility: "hidden" }, at + 0.54);
-      }
-
-      function focusTransition(oldScene, newScene, at) {
-        tl.set(newScene, { opacity: 0, filter: "blur(12px)", scale: 0.985, visibility: "visible" }, at);
-        tl.to(oldScene, { filter: "blur(14px)", duration: 0.42, ease: "power1.in" }, at);
-        tl.to(oldScene, { opacity: 0, duration: 0.34, ease: "power2.in" }, at + 0.18);
-        tl.to(newScene, { opacity: 1, duration: 0.34, ease: "power2.out" }, at + 0.18);
-        tl.to(newScene, { filter: "blur(0px)", scale: 1, duration: 0.42, ease: "power1.out" }, at + 0.42);
-        tl.set(oldScene, { filter: "none", visibility: "hidden" }, at + 0.7);
+      function exitScene(scene, at) {
+        addTo(scene + " .scene-content", { opacity: 0, duration: 0.48, ease: "power2.in" }, at);
+        addTo(scene, { opacity: 0, duration: 0.32, ease: "power1.inOut" }, at + 0.18);
       }
 
       enterScene("#scene-1", 0);
-      tl.from("#scene-1 .pain-item", { x: -36, opacity: 0, duration: 0.46, stagger: 0.14, ease: "power2.out" }, 1.0);
-      tl.from("#scene-1 .terminal-panel", { y: 44, opacity: 0, duration: 0.58, ease: "back.out(1.25)" }, 0.72);
-      tl.from("#scene-1 .code-line", { x: 26, opacity: 0, duration: 0.34, stagger: 0.16, ease: "power4.out" }, 1.42);
+      tl.from("#scene-1 .main-terminal", { x: 70, opacity: 0, scale: 0.985, duration: 0.7, ease: "power3.out" }, 1.12);
+      tl.from("#scene-1 .floating-ticket", { y: 48, opacity: 0, scale: 0.97, duration: 0.56, ease: "power3.out" }, 1.58);
+      tl.from("#scene-1 .mini-ticket", { x: -42, opacity: 0, scale: 0.98, duration: 0.5, ease: "power2.out" }, 1.78);
+      tl.from("#scene-1 .stat-row", { x: 24, opacity: 0, duration: 0.34, stagger: 0.12, ease: "power2.out" }, 2.0);
+      exitScene("#scene-1", 17.3);
 
-      focusTransition("#scene-1", "#scene-2", 6.7);
-      enterScene("#scene-2", 6.7);
-      tl.from("#scene-2 .hairline", { scaleX: 0, transformOrigin: "left center", duration: 0.5, ease: "power2.out" }, 7.55);
-      tl.from("#scene-2 .node", { y: 34, opacity: 0, scale: 0.96, duration: 0.48, stagger: 0.1, ease: "back.out(1.2)" }, 7.82);
-      tl.from("#scene-2 .connector", { scale: 0.4, opacity: 0, duration: 0.34, stagger: 0.12, ease: "elastic.out(1, 0.75)" }, 8.12);
+      enterScene("#scene-2", 17.8);
+      tl.from("#scene-2 .quote-panel", { x: 52, opacity: 0, scale: 0.98, duration: 0.7, ease: "power3.out" }, 19.1);
+      exitScene("#scene-2", 36.95);
 
-      focusTransition("#scene-2", "#scene-3", 14.6);
-      enterScene("#scene-3", 14.6);
-      tl.from("#scene-3 .control-mock", { x: -48, opacity: 0, duration: 0.56, ease: "power3.out" }, 15.12);
-      tl.from("#scene-3 .field-block, #scene-3 .run-button", { y: 24, opacity: 0, duration: 0.35, stagger: 0.1, ease: "power2.out" }, 15.58);
-      tl.from("#scene-3 .step", { x: 38, opacity: 0, duration: 0.44, stagger: 0.14, ease: "expo.out" }, 16.08);
+      enterScene("#scene-3", 37.4);
+      tl.from("#scene-3 .source-card", { y: 46, opacity: 0, scale: 0.985, duration: 0.54, stagger: 0.12, ease: "power3.out" }, 38.9);
+      exitScene("#scene-3", 56.72);
 
-      focusTransition("#scene-3", "#scene-4", 23.1);
-      enterScene("#scene-4", 23.1);
-      tl.from("#scene-4 .hairline", { scaleX: 0, transformOrigin: "left center", duration: 0.48, ease: "power2.out" }, 24.0);
-      tl.from("#scene-4 .scenario-item", { y: 44, opacity: 0, duration: 0.5, stagger: 0.13, ease: "back.out(1.18)" }, 24.35);
-      tl.from("#scene-4 .scenario-code", { x: -24, opacity: 0, duration: 0.32, stagger: 0.13, ease: "power4.out" }, 24.52);
+      enterScene("#scene-4", 57.2);
+      tl.from("#scene-4 .market-board", { x: -58, opacity: 0, scale: 0.985, duration: 0.62, ease: "power3.out" }, 58.2);
+      tl.from("#scene-4 .bar", { scaleY: 0, transformOrigin: "bottom center", duration: 0.62, stagger: 0.05, ease: "expo.out" }, 58.82);
+      tl.from("#scene-4 .evidence-tile", { y: 24, opacity: 0, duration: 0.42, stagger: 0.1, ease: "power2.out" }, 59.4);
+      exitScene("#scene-4", 75.38);
 
-      focusTransition("#scene-4", "#scene-5", 31.2);
-      enterScene("#scene-5", 31.2);
-      tl.from("#scene-5 .need-row", { x: -34, opacity: 0, duration: 0.46, stagger: 0.13, ease: "power2.out" }, 32.34);
-      tl.from("#scene-5 .closing-panel", { y: 48, opacity: 0, duration: 0.58, ease: "back.out(1.15)" }, 32.12);
-      tl.from("#scene-5 .closing-panel h3", { y: 36, opacity: 0, duration: 0.52, ease: "expo.out" }, 32.62);
-      tl.from("#scene-5 .closing-panel p", { y: 24, opacity: 0, duration: 0.42, ease: "power3.out" }, 33.05);
-      tl.from("#scene-5 .disclaimer", { y: 18, opacity: 0, duration: 0.4, ease: "power2.out" }, 33.42);
-      tl.to("#scene-5", { opacity: 0, duration: 0.8, ease: "power1.inOut" }, 40.8);
+      enterScene("#scene-5", 75.8);
+      tl.from("#scene-5 .agent-row", { y: 38, opacity: 0, scale: 0.98, duration: 0.5, stagger: 0.1, ease: "power3.out" }, 77.2);
+      exitScene("#scene-5", 95.7);
+
+      enterScene("#scene-6", 96.2);
+      tl.from("#scene-6 .market-board", { x: 58, opacity: 0, scale: 0.985, duration: 0.62, ease: "power3.out" }, 97.4);
+      tl.from("#scene-6 .asset-row", { x: 30, opacity: 0, duration: 0.44, stagger: 0.12, ease: "power2.out" }, 98.02);
+      exitScene("#scene-6", 115.82);
+
+      enterScene("#scene-7", 116.3);
+      tl.from("#scene-7 .risk-ticket", { x: -56, opacity: 0, scale: 0.985, duration: 0.62, ease: "power3.out" }, 117.32);
+      tl.from("#scene-7 .ticket-row", { x: 28, opacity: 0, duration: 0.44, stagger: 0.12, ease: "power2.out" }, 117.95);
+      exitScene("#scene-7", 135.78);
+
+      enterScene("#scene-8", 136.2);
+      tl.from("#scene-8 .control-panel", { x: -58, opacity: 0, scale: 0.985, duration: 0.62, ease: "power3.out" }, 137.24);
+      tl.from("#scene-8 .mode, #scene-8 .form-block, #scene-8 .run-button", { y: 24, opacity: 0, duration: 0.38, stagger: 0.08, ease: "power2.out" }, 137.88);
+      exitScene("#scene-8", 155.84);
+
+      enterScene("#scene-9", 156.3);
+      tl.from("#scene-9 .stage-row", { x: -40, opacity: 0, duration: 0.44, stagger: 0.1, ease: "power2.out" }, 157.58);
+      exitScene("#scene-9", 173.82);
+
+      enterScene("#scene-10", 174.2);
+      tl.from("#scene-10 .quote-panel", { y: 40, opacity: 0, scale: 0.985, duration: 0.58, ease: "power3.out" }, 175.82);
+      tl.from("#scene-10 .final-card", { x: 52, opacity: 0, scale: 0.985, duration: 0.64, ease: "power3.out" }, 175.28);
+      tl.from("#scene-10 .final-card h3, #scene-10 .final-card p, #scene-10 .disclaimer", { y: 24, opacity: 0, duration: 0.42, stagger: 0.12, ease: "power2.out" }, 175.88);
+      tl.to("#scene-10 .scene-content", { opacity: 0, duration: 0.8, ease: "power1.inOut" }, 187.5);
 
       window.__timelines["main"] = tl;
     </script>
