@@ -1,6 +1,6 @@
 <div align="center">
 
-# Multi-Agent Inv
+# # Stock-Agent-Arena
 
 面向股票研究、A 股扫描与投资决策复盘的多 Agent 分析工作台。
 
