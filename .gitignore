@@ -9,3 +9,5 @@ build/
 node_modules/
 .npm-cache/
 *.tsbuildinfo
+user-video-hyperframes/
+video/

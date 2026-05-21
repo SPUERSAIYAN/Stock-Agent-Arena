@@ -172,7 +172,7 @@ agents:
           deribit_orderbook_depth: 5
         tushare:
           enabled: true
-          token: 42d9c5d09bce973dd2226d7695dc6d24448d61f115f0fea663ed83f2
+          token: "你的真实tushare密钥"
           http_url: http://118.89.66.41:8010/
           china_equity: true
           us_equity: true
