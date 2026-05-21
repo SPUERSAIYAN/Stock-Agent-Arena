@@ -4,11 +4,11 @@
 
 面向股票研究、A 股扫描与投资决策复盘的多 Agent 分析工作台。
 
-`<a href="http://stock.supersaiyan.online/">`在线体验 `</a>`
+<a href="http://stock.supersaiyan.online/">在线体验</a>
 ·
-`<a href="#快速开始">`快速开始 `</a>`
+<a href="#快速开始">快速开始</a>
 ·
-`<a href="#运行模式">`运行模式 `</a>`
+<a href="#运行模式">运行模式</a>
 
 <img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white">
   <img alt="LangGraph" src="https://img.shields.io/badge/LangGraph-Agent%20Workflow-1f6feb">
@@ -250,7 +250,3 @@ npm run typecheck
 cd web
 npm run dev
 ```
-
-## 免责声明
-
-本项目输出仅用于研究、学习和辅助分析，不构成任何投资建议、收益承诺或交易指令。金融市场存在风险，任何实际交易都应由使用者自行判断并承担结果。、
